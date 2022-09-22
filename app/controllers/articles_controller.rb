@@ -1,5 +1,5 @@
 class ArticlesController < ApplicationController
-  before_action :set_article, only: %i[ show edit update destroy ]
+  before_action :set_article, only: [:show, :edit, :update, :destroy]
 
   # GET /articles or /articles.json
   def index
@@ -8,7 +8,6 @@ class ArticlesController < ApplicationController
 
   # GET /articles/1 or /articles/1.json
   def show
-    @article=Articel.find(params[:id])
   end
 
   # GET /articles/new
@@ -22,10 +21,13 @@ class ArticlesController < ApplicationController
 
   # POST /articles or /articles.json
   def create
+    # render plain: param[:article]
+
     @article = Article.new(article_params)
 
     respond_to do |format|
       if @article.save
+        flash[:notice] = "Article was successfully created."
         format.html { redirect_to article_url(@article), notice: "Article was successfully created." }
         format.json { render :show, status: :created, location: @article }
       else
